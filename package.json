@@ -1,0 +1,73 @@
+{
+  "name": "clip-marker-electron",
+  "version": "1.0.0",
+  "description": "Video Clip Marker Tool with Nuxt3 + Electron + Flask",
+  "main": "main.js",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:nuxt\" \"npm run dev:flask\" \"npm run dev:electron\"",
+    "dev:nuxt": "cd frontend && npm run dev",
+    "dev:flask": "cd backend && python app.py",
+    "dev:electron": "wait-on http://localhost:3000 http://localhost:5000 && electron .",
+    "build": "npm run build:nuxt && npm run build:electron",
+    "build:nuxt": "cd frontend && npm run build",
+    "build:electron": "electron-builder",
+    "start": "electron .",
+    "install:all": "npm install && cd frontend && npm install && cd ../backend && pip install -r requirements.txt"
+  },
+  "keywords": [
+    "electron",
+    "nuxt3",
+    "flask",
+    "video",
+    "clip",
+    "marker"
+  ],
+  "author": "ClipMarker Team",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.1",
+    "concurrently": "^8.2.2",
+    "wait-on": "^7.2.0"
+  },
+  "dependencies": {
+    "electron-updater": "^6.1.7"
+  },
+  "build": {
+    "appId": "com.clipmarker.app",
+    "productName": "Clip Marker",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "frontend/dist/**/*",
+      "backend/**/*",
+      "!backend/venv/**/*",
+      "!backend/__pycache__/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "backend",
+        "to": "backend",
+        "filter": [
+          "**/*",
+          "!venv/**/*",
+          "!__pycache__/**/*"
+        ]
+      }
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "assets/icon.ico"
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "assets/icon.icns"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "assets/icon.png"
+    }
+  }
+} 
